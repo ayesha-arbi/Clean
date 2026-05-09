@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play, X } from "lucide-react";
-import { useEffect } from "react";
+import { Play, X, Keyboard } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface ApprovalBarProps {
   onApprove: () => void;
@@ -10,8 +10,8 @@ interface ApprovalBarProps {
 }
 
 export default function ApprovalBar({ onApprove, onReject }: ApprovalBarProps) {
-  
-  // Minimal Keyboard Shortcuts
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
@@ -26,34 +26,61 @@ export default function ApprovalBar({ onApprove, onReject }: ApprovalBarProps) {
   }, [onApprove, onReject]);
 
   return (
-    <motion.div 
-      initial={{ y: 50, opacity: 0 }}
+    <motion.div
+      initial={{ y: 60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 50, opacity: 0 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50"
+      exit={{ y: 60, opacity: 0 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"
     >
-      <div className="glass-panel rounded-full p-1.5 pr-4 flex items-center gap-2 shadow-2xl">
-        <button 
+      {/* Shortcuts tooltip */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: showShortcuts ? 1 : 0, y: showShortcuts ? 0 : 4 }}
+        className="flex items-center gap-3 text-[10px] text-ghost-highlight border border-surface-border bg-surface rounded-full px-3 py-1.5 pointer-events-none"
+      >
+        <span className="flex items-center gap-1.5">
+          <kbd className="border border-surface-border rounded px-1 py-0.5 text-[9px]">⌘</kbd>
+          <kbd className="border border-surface-border rounded px-1 py-0.5 text-[9px]">↵</kbd>
+          Execute
+        </span>
+        <span className="w-[1px] h-3 bg-surface-border" />
+        <span className="flex items-center gap-1.5">
+          <kbd className="border border-surface-border rounded px-1 py-0.5 text-[9px]">Esc</kbd>
+          Dismiss
+        </span>
+      </motion.div>
+
+      {/* Main bar */}
+      <div className="glass-panel rounded-full p-1.5 flex items-center gap-1 shadow-2xl shadow-black/40">
+        {/* Execute button */}
+        <button
           onClick={onApprove}
-          className="bg-foreground text-background hover:bg-white transition-colors px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium"
+          className="bg-foreground text-background hover:bg-white active:scale-95 transition-all px-5 py-2.5 rounded-full flex items-center gap-2 text-sm font-semibold"
         >
-          <Play size={14} className="fill-current" />
+          <Play size={13} className="fill-current" />
           Execute Workflow
         </button>
-        
-        <div className="w-[1px] h-4 bg-surface-border mx-2" />
-        
-        <span className="text-xs text-ghost-highlight hidden md:inline-block mr-4">
-          Cmd + Enter
-        </span>
 
-        <button 
+        <div className="w-[1px] h-5 bg-surface-border mx-1" />
+
+        {/* Shortcut hint toggle */}
+        <button
+          onMouseEnter={() => setShowShortcuts(true)}
+          onMouseLeave={() => setShowShortcuts(false)}
+          className="p-2.5 text-ghost-highlight hover:text-foreground transition-colors rounded-full hover:bg-surface"
+          title="Keyboard shortcuts"
+        >
+          <Keyboard size={14} />
+        </button>
+
+        {/* Dismiss button */}
+        <button
           onClick={onReject}
-          className="p-2 text-ghost-highlight hover:text-foreground transition-colors rounded-full hover:bg-surface"
+          className="p-2.5 text-ghost-highlight hover:text-foreground transition-colors rounded-full hover:bg-surface"
           title="Dismiss (Esc)"
         >
-          <X size={16} />
+          <X size={14} />
         </button>
       </div>
     </motion.div>

@@ -1,3 +1,6 @@
 {
-  "/(marketing)/page": "app/(marketing)/page.js"
+  "/app/page": "app/app/page.js",
+  "/api/intent/route": "app/api/intent/route.js",
+  "/page": "app/page.js",
+  "/api/execute/route": "app/api/execute/route.js"
 }

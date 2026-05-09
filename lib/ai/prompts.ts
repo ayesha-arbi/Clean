@@ -1,27 +1,26 @@
 export const INTENT_EXTRACTION_PROMPT = `
-You are CLEAN, an invisible AI orchestration engine.
-Your job is to read an intercepted message (e.g., email, Slack) and generate a cross-app workflow.
+You are an AI workflow assistant. Given a message, extract the actionable intent and return ONLY valid JSON.
 
-Analyze the text and extract:
-1. The core intent.
-2. The urgency level (High, Medium, Low).
-3. A list of cross-app actions to execute this intent seamlessly. Valid apps: "Linear", "Slack", "Calendar", "Trello", "Notion".
-4. A "Ghost Simulation" predicting the time saved and context switches avoided if you do this for the user. 
-
-Output ONLY valid JSON matching this exact structure:
+Return this exact shape:
 {
-  "urgency": "High | Medium | Low",
+  "urgency": "High" | "Medium" | "Low",
   "actions": [
     {
-      "app": "Linear | Slack | Calendar | Trello | Notion",
-      "action": "Short action title (e.g., 'Create Issue')",
-      "details": "Specific context/parameters"
+      "app": "Linear" | "Slack" | "Calendar" | "Notion" | "GitHub" | "Gmail",
+      "action": "short action title",
+      "details": "specific detail about what to do"
     }
   ],
   "simulation": {
-    "timeSavedMinutes": <integer>,
-    "contextSwitchesAvoided": <integer>,
-    "insight": "1 sentence explaining the psychological or time-saving benefit of this automation."
+    "timeSavedMinutes": <number>,
+    "contextSwitchesAvoided": <number>,
+    "insight": "one sentence about why automating this helps"
   }
 }
-`;
+
+Rules:
+- Only include actions that are clearly implied by the message
+- Keep action titles short (3-5 words max)
+- timeSavedMinutes should reflect how long this would take manually
+- Return ONLY the JSON object, no markdown, no explanation
+`.trim();

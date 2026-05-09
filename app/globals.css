@@ -3,38 +3,23 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: #0A0A0A;
-    --foreground: #EDEDED;
-    --selection: #262626;
-  }
-  
   body {
-    @apply bg-background text-foreground antialiased selection:bg-surface-border;
+    background-color: #0A0A0A;
+    color: #EDEDED;
+    -webkit-font-smoothing: antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Custom minimal scrollbar */
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #262626;
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #404040;
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #262626; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #404040; }
 }
 
 @layer utilities {
   .glass-panel {
     @apply bg-surface/80 backdrop-blur-md border border-surface-border shadow-sm;
   }
-  /* Focus mode utility: dampens non-active elements */
   .focus-dampen {
     @apply transition-all duration-700 ease-in-out;
   }
